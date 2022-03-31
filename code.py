@@ -3,7 +3,7 @@ import random
 
 #deklarasi global
 tabpop = {
-    'fenotif' : [],
+    'kromosom' : [],
     'fitness' : []
 }
 
@@ -17,18 +17,16 @@ n_gen = 10
 generasi = 10
 
 #random kromosom
-def kromosom(gen):
+def randKrom(gen):
     tabkrom = []
     for i in range(gen):
         tabkrom.append(random.randint(0,1))
     return tabkrom
 
 #populasi untuk menampung kromosom
-def populasi(populasi, gen):
-    tabpop = []
-    for i in range(populasi):
-        tabpop.append(kromosom(gen))
-    return tabpop
+def populasi(n_populasi, n_gen, tabpop):
+    for i in range(n_populasi):
+        tabpop['kromosom'].append(randKrom(n_gen))
 
 #fungsi
 def fungsi(x, y):
@@ -46,20 +44,33 @@ def decodeKrom(kromosom, interval): #binary decoding
 
     return interval[0] + (((interval[1] - interval[0]) / jml_penyebut) * jml_kali)
 
-#perhitungan fitness
+#membagi array menjadi 2 gamet: x dan y
+def split(kromosom):
+    return (kromosom[ : len(kromosom) // 2], kromosom[len(kromosom) // 2 : ])
+
+#nilai fitness
 def fitness(h):
     a = 0.0000000001
     return 1/(h + a) 
 
+#perhitungan fitness
+def hitungFitness(tabpop):
+    for i in range(len(tabpop['kromosom'])):
+        x, y = split(tabpop['kromosom'][i])
+        gamet_x = decodeKrom(x, interval_x)
+        gamet_y = decodeKrom(y, interval_y)
+        f = fungsi(gamet_x, gamet_y)
+        tabpop['fitness'].append(fitness(f))    
+
 #pemilihan orang tua menggunakan roulette wheel selection
 def RouletteWheelSelection(tabpop):
     total = 0
-    for indv in range(len(tabpop['fenotif'])):
-        total += tabpop['fitness'][indv]
+    for indv in range(len(tabpop['kromosom'])):
+        total += tabpop['kromosom'][indv]
 
     r = random.random()
     indv = 0
-    while(r > 0 & indv < len(tabpop['fenotif'])):
+    while(r > 0 & indv < len(tabpop['kromosom'])):
         r -= tabpop['fitness'][indv] / total
         indv += 1
     return indv - 1
