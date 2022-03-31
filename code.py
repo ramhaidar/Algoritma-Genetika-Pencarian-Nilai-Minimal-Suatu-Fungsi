@@ -1,4 +1,5 @@
 import math
+import random
 
 #inisiasi batas interval x dan y
 interval_x = [-5, 5]
@@ -8,6 +9,20 @@ interval_y = [-5, 5]
 n_kromosom = 10
 n_gen = 10
 generasi = 10
+
+#random kromosom
+def kromosom(gen):
+    tabkrom = []
+    for i in range(gen):
+        tabkrom.append(random.randint(0,1))
+    return tabkrom
+
+#populasi untuk menampung kromosom
+def populasi(populasi, gen):
+    tabpop = []
+    for i in range(populasi):
+        tabpop.append(kromosom(gen))
+    return tabpop
 
 #fungsi
 def fungsi(x, y):
@@ -26,7 +41,9 @@ def decodeKrom(kromosom, interval): #binary decoding
     return interval[0] + (((interval[1] - interval[0]) / jml_penyebut) * jml_kali)
 
 #perhitungan fitness
-def fitnessFunction()
+def fitness(h):
+    a = 0.0000000001
+    return 1/(h + a) 
 
 #pemilihan orangtua
 #crossover
