@@ -38,8 +38,8 @@ def decodeKrom(kromosom, interval): #binary decoding
     jml_kali = 0
     jml_penyebut = 0
     for i in range(len(kromosom)):
-        genotif = kromosom[i]
-        jml_kali += (genotif *(2**-(i+1)))
+        gen = kromosom[i]
+        jml_kali += (gen *(2**-(i+1)))
         jml_penyebut +=(2**-(i+1))
 
     return interval[0] + (((interval[1] - interval[0]) / jml_penyebut) * jml_kali)
