@@ -1,6 +1,12 @@
 import math
 import random
 
+#deklarasi global
+tabpop = {
+    'fenotif' : [],
+    'fitness' : []
+}
+
 #inisiasi batas interval x dan y
 interval_x = [-5, 5]
 interval_y = [-5, 5]
@@ -45,7 +51,19 @@ def fitness(h):
     a = 0.0000000001
     return 1/(h + a) 
 
-#pemilihan orangtua
+#pemilihan orang tua menggunakan roulette wheel selection
+def RouletteWheelSelection(tabpop):
+    total = 0
+    for indv in range(len(tabpop['fenotif'])):
+        total += tabpop['fitness'][indv]
+
+    r = random.random()
+    indv = 0
+    while(r > 0 & indv < len(tabpop['fenotif'])):
+        r -= tabpop['fitness'][indv] / total
+        indv += 1
+    return indv - 1
+
 #crossover
 #mutasi
-#pergantian generas
+#pergantian generasi
