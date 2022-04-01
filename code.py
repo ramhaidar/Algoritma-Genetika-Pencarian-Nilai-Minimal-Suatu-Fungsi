@@ -24,7 +24,7 @@ def randKrom(gen):
     return tabkrom
 
 #populasi untuk menampung kromosom
-def populasi(n_populasi, n_gen, tabpop):
+def buat_populasi(n_populasi, n_gen, tabpop):
     for i in range(n_populasi):
         tabpop['kromosom'].append(randKrom(n_gen))
 
