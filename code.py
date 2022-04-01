@@ -75,6 +75,42 @@ def RouletteWheelSelection(tabpop):
         indv += 1
     return indv - 1
 
-#crossover
+#crossover single point
+def crossover(parent1, parent2, prob):
+    child1 = []
+    child2 = []
+
+    #mencari nilai random
+    nilai = random.random()
+
+    if nilai <= prob:
+        p = random.randint(1, len(parent1) - 1) #mencari titik silang
+
+        #offspring 1
+        child1[ : p] = parent1[ : p]
+        child1[p : ] = parent2[p : ]
+
+        #offspring 2
+        child2[ : p] = parent2[ : p]
+        child2[p : ] = parent1[p : ]
+
+    else:
+        child1 = parent1
+        child2 = parent2
+    
+    return (child1, child2)
+
 #mutasi
+def mutasi(krom, prob):
+
+    for i in range (len(krom)):
+        #mencari nilai random
+        r = random.random()
+        if r <= prob:
+            if krom[i] == 0:
+                krom[i] = 1
+            else:
+                krom[i] = 0
+    return krom
+
 #pergantian generasi
