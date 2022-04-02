@@ -79,7 +79,7 @@ def hitungFitness(tabpop):
         x, y = split(tabpop['kromosom'][i])
         gamet_x = decodeKrom(x, interval_x)
         gamet_y = decodeKrom(y, interval_y)
-        f = fungsi(gamet_x, gamet_y)
+        f = fitness(fungsi(gamet_x, gamet_y))
         tabpop['fitness'].append(fitness(f))    
 
 
@@ -193,9 +193,8 @@ while (g <= generasi): #kondisi penghentian
 print("KROMOSOM TERBAIK DENGAN NILAI FUNGSI MINIMUM PADA TIAP GENERASI")
 print("")
 print('-' * 115)
-print('{:<16}{:<3}{:<31}{:<3}{:<20}{:<3}{:<18}{:<3}{:<20}'.format('Generasi ke-','|','Kromosom','|','Fenotif x','|', 'Fenotif y','|', 'Nilai Fitness'))
+print('{:<16}{:<3}{:<31}{:<3}{:<20}{:<3}{:<20}{:<3}{:<20}'.format('Generasi ke-','|','Kromosom','|','Fenotif x','|', 'Fenotif y','|', 'Nilai Fitness'))
 print('-' * 115)
 for i in range (len(bestKrom['generasi'])):
     print(bestKrom['generasi'][i], '\t\t| ', bestKrom['kromosom'][i], '| ', bestKrom['fenotif x'][i], '| ', bestKrom['fenotif y'][i], '| ', bestKrom['fitness'][i])
-
 
