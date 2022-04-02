@@ -15,9 +15,9 @@ newPop = { #populasi hasil rekayasa
 bestKrom = {
     'generasi' : [],
     'kromosom' : [],
-    'fenotif x' : [],
-    'fenotif y' : [],
-    'fitness' : [],
+    #'fenotif x' : [],
+    #'fenotif y' : [],
+    'fitness' : []
 }
 
 #inisiasi batas interval x dan y
@@ -137,13 +137,25 @@ def mutasi(krom, prob):
 #seleksi survivor
 def elitism(tabpop, newpop):
 
-    #mencari 2 bibit unggul
-    for i in range(2):
-        best = max(tabpop['fitness'])
-        idx_best = tabpop['fitness'].index(best)
+    #mencari bibit unggul ke 1
+    
+    best1 = max(tabpop['fitness'])
+    idx_best1 = tabpop['fitness'].index(best1)
 
-        newpop['kromosom'].append(tabpop['kromosom'][idx_best])
-        newpop['fitness'].append(tabpop['fitness'][idx_best])
+    newpop['kromosom'].append(tabpop['kromosom'][idx_best1])
+    newpop['fitness'].append(tabpop['fitness'][idx_best1])
+
+    #mencari bibit unggul ke 2
+    i = 0
+    best2 = 0
+    while i < len(tabpop['kromosom']):
+        if tabpop['fitness'][i] > best2 and tabpop['fitness'][i] < best1:
+            best2 = tabpop['fitness'][i]
+        i += 1
+    
+    idx_best2 = tabpop['fitness'].index(best2)
+    newpop['kromosom'].append(tabpop['kromosom'][idx_best2])
+    newpop['fitness'].append(tabpop['fitness'][idx_best2])
     
     return newpop
 
@@ -151,12 +163,32 @@ def elitism(tabpop, newpop):
 
 #PROGRAM UTAMA
 #Pergantian Generasi dengan Generational Model
-
 buat_populasi(n_kromosom, n_gen , tabpop) #membuat populasi random
 hitungFitness(tabpop) #menghitung fitness setiap kromosom pada populasi
 
 g = 1
 while (g <= generasi): #kondisi penghentian
+
+    newPop = { #populasi hasil rekayasa
+    'kromosom' : [],
+    'fitness'  : []
+    }
+
+    #menampilkan tabel populasi
+    print(">>>> POPULASI GENERASI KE", g, "<<<<")
+    print()
+    print('-' * 120)
+    print('No.','\t|','{:<33}{:<3}{:<22}{:<3}{:<22}{:<3}{:<22}'.format('Kromosom','|','Fenotif x','|', 'Fenotif y','|', 'Nilai Fitness'))
+    print('-' * 120)
+
+    TK = dict(tabpop)
+    for j in range (len(TK['kromosom'])):
+        x, y = split(TK['kromosom'][j])
+        
+        print(j + 1,'\t| ', TK['kromosom'][j], '| ','{:<22}{:<3}{:<22}{:<3}{:<22}'.format( decodeKrom(x, interval_x), '| ', decodeKrom(y, interval_y), '| ', TK['fitness'][j]))
+
+    print('-' * 120)
+    print()
 
     #menyeleksi 2 bibit dengan fitness tertinggi
     newPop = elitism(tabpop, newPop)
@@ -165,10 +197,6 @@ while (g <= generasi): #kondisi penghentian
     bestKrom['generasi'].append(g)
     bestKrom['kromosom'].append(newPop['kromosom'][0])
     bestKrom['fitness'].append(newPop['fitness'][0])
-
-    x, y = split(newPop['kromosom'][0])
-    bestKrom['fenotif x'].append(decodeKrom(x, interval_x))
-    bestKrom['fenotif y'].append(decodeKrom(y, interval_y))
 
     while len(newPop['kromosom']) < n_kromosom:
         #menyeleksi parent
@@ -192,9 +220,35 @@ while (g <= generasi): #kondisi penghentian
 #Tampilan piranti
 print("KROMOSOM TERBAIK DENGAN NILAI FUNGSI MINIMUM PADA TIAP GENERASI")
 print("")
-print('-' * 115)
-print('{:<16}{:<3}{:<31}{:<3}{:<20}{:<3}{:<20}{:<3}{:<20}'.format('Generasi ke-','|','Kromosom','|','Fenotif x','|', 'Fenotif y','|', 'Nilai Fitness'))
-print('-' * 115)
-for i in range (len(bestKrom['generasi'])):
-    print(bestKrom['generasi'][i], '\t\t| ', bestKrom['kromosom'][i], '| ', bestKrom['fenotif x'][i], '| ', bestKrom['fenotif y'][i], '| ', bestKrom['fitness'][i])
+print('-' * 122)
+print('{:<16}{:<3}{:<31}{:<3}{:<22}{:<3}{:<22}{:<3}{:<22}'.format('Generasi ke-','|','Kromosom','|','Fenotif x','|', 'Fenotif y','|', 'Nilai Fitness'))
+print('-' * 122)
+DPX = dict(bestKrom)
+for i in range (len(DPX['generasi'])):
+    x, y = split(DPX['kromosom'][i])
 
+    print(DPX['generasi'][i], '\t\t| ', DPX['kromosom'][i], '| ','{:<22}{:<3}{:<22}{:<3}{:<22}'.format( decodeKrom(x, interval_x), '| ', decodeKrom(y, interval_y), '| ', DPX['fitness'][i]))
+
+print('-' * 122)
+
+#Mencari letak generasi solusi
+k = 0
+max_fit = 0.0
+idx_max = 0
+while(k < len(bestKrom['generasi']) ):
+    if (bestKrom['fitness'][k] > max_fit):
+        max_fit = bestKrom['fitness'][k]
+        idx_max = k
+    k += 1
+
+#Menampilkan solusi terbaik
+print()
+print("Solusi kromosom terbaik pada populasi adalah", bestKrom['kromosom'][idx_max])
+print("dengan nilai fitness =", max_fit, "terdapat pada generasi ke-", bestKrom['generasi'][idx_max])
+
+gamet_x, gamet_y = split(bestKrom['kromosom'][i])
+x = decodeKrom(x, interval_x)
+y = decodeKrom(y, interval_y)
+print("Nilai x :", x)
+print("Nilai y :", y)
+print("Hasil fungsi :", fungsi(x, y))
