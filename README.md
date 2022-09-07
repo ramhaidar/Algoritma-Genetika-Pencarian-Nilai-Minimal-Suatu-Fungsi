@@ -1,4 +1,4 @@
-# ANALISIS PENCARIAN NILAI MINIMAL TERHADAP SUATU FUNGSI MENGGUNAKAN ALGORITMA GENETIKA
+# ANALISIS PENCARIAN NILAI MINIMAL SUATU FUNGSI MENGGUNAKAN ALGORITMA GENETIKA
 Source code ini dibuat oleh Filza Rahma Muflihah dan Ummu Husnul Khatimah untuk memenuhi tugas pemrograman 1 mata kuliah Pengantar Kecerdasan Buatan pada jenjang S1 Informatika Universitas Telkom. 
 
 # Deskripsi Masalah
